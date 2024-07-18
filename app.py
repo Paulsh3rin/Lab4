@@ -1,19 +1,20 @@
 from flask import Flask, request, render_template
 import numpy as np
 import pickle
+import os
 
 app = Flask(__name__)
 
 # Load the trained model
-with open('rf_classifier.pkl', 'rb') as model_file:
+with open('Rf_classifier.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
 # Load the scaler
-with open('scaler.pkl', 'rb') as scaler_file:
+with open('Scaler.pkl', 'rb') as scaler_file:
     scaler = pickle.load(scaler_file)
 
 # Load the label encoder
-with open('label_encoder.pkl', 'rb') as le_file:
+with open('Label_encoder.pkl', 'rb') as le_file:
     label_encoder = pickle.load(le_file)
 
 @app.route('/')
@@ -43,4 +44,5 @@ def predict():
     return f'This could be a {species[0]}'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
